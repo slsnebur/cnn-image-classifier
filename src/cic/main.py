@@ -38,7 +38,7 @@ def get_train_data(array_filename):
 
         training_array = np.load(array_filename, None, True)
     else:
-        print("Loading and preprocessing training data:\n")
+        print("Loading and preprocessing training data IMG_SCALE=" + str(IMG_SCALE) + "\n")
 
         for img in progressbar.progressbar(os.listdir(TRAIN_DIRECTORY)):
             img_type = identify_train_img(img, "dog", "cat")
