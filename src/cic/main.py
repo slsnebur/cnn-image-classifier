@@ -9,6 +9,7 @@ import progressbar
 #pip install opencv-python
 #pip install progressbar2
 
+
 #TODO sieć konwolucyjna (convnet2d)
 #TODO funkcje aktywacji - relu (dla hidden layers)
 #TODO Tensorflow + Keras
