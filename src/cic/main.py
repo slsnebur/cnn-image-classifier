@@ -4,12 +4,23 @@ import os
 from random import shuffle
 import progressbar
 
+#Python 3.75 maksymalnie
+#pip install numpy
+#pip install opencv-python
+#pip install progressbar2
+
+#TODO sieć konwolucyjna (convnet2d)
+#TODO funkcje aktywacji - relu (dla hidden layers)
+#TODO Tensorflow + Keras
+#TODO test data - randomowe 6250 obrazkow z TEST_DIRECTORY (train/test 80/20)
+#TODO nie zmieniaj sciezek ani zadnych nazw przed commitem a jak cos duzego sie bedzie generowac w folderach to dodaj do .gitignore
+
 TRAIN_DIRECTORY = "../../datasets/train"
 TEST_DIRECTORY = "../../datasets/test"
-TRAIN_ARRAY_FILENAME = "cnn-dog-cat.npy"
-#TODO better serialization
+IMG_SCALE = 50
+TRAIN_ARRAY_FILENAME = "cnn-dog-cat-sc{}.npy".format(IMG_SCALE)
 MODEL = 'cnn-img-dogs-cats.model'
-IMG_SCALE = 75
+
 
 def identify_train_img(img, first_type, second_type):
     if first_type in img:
@@ -23,7 +34,7 @@ def get_train_data(array_filename):
     training_array = []
     if os.path.exists("./" + array_filename):
         print("Training data already loaded, using: " + array_filename)
-        
+
         training_array = np.load(array_filename, None, True)
     else:
         print("Loading and preprocessing training data:\n")
@@ -41,9 +52,3 @@ def get_train_data(array_filename):
     return training_array
 
 get_train_data(TRAIN_ARRAY_FILENAME)
-
-#TODO sieć konwolucyjna (convnet2d)
-#TODO funkcje aktywacji - relu (dla hidden layers)
-#TODO Tensorflow + Keras
-#TODO test data - randomowe 6250 obrazkow z TEST_DIRECTORY (train/test 80/20)
-#TODO nie zmieniaj sciezek ani zadnych nazw przed commitem a jak cos duzego sie bedzie generowac w folderach to dodaj do .gitignore
