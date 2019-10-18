@@ -1,7 +1,7 @@
 datasets/train
 datasets/test
-src/cic/cnn-dog-cat-sc25
-src/cic/cnn-dog-cat-sc50
-src/cic/cnn-dog-cat-sc75
-src/cic/cnn-dog-cat-sc100
+src/cic/cnn-dog-cat-sc25.npy
+src/cic/cnn-dog-cat-sc50.npy
+src/cic/cnn-dog-cat-sc75.npy
+src/cic/cnn-dog-cat-sc100.npy
 
