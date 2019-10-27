@@ -4,6 +4,20 @@ import os
 from random import shuffle
 import progressbar
 
+import keras
+from keras import backend as K
+from keras.models import Sequential
+from keras.layers import Activation
+from keras.layers.core import Dense, Flatten
+from keras.optimizers import Adam
+from keras.metrics import categorical_crossentropy
+from keras.preprocessing.image import ImageDataGenerator
+from keras.layers.normalization import BatchNormalization
+from keras.layers.convolutional import *
+from matplotlib import pyplot as plt
+from sklearn.metrics import confusion_matrix
+import itertools
+
 #Python 3.75 maksymalnie
 #pip install numpy
 #pip install opencv-python
@@ -21,6 +35,7 @@ TEST_DIRECTORY = "../../datasets/test"
 IMG_SCALE = 50
 TRAIN_ARRAY_FILENAME = "cnn-dog-cat-sc{}.npy".format(IMG_SCALE)
 MODEL = 'cnn-img-dogs-cats.model'
+LR = 0.001
 
 
 def identify_train_img(img, first_type, second_type):
@@ -52,4 +67,44 @@ def get_train_data(array_filename):
 
     return training_array
 
-get_train_data(TRAIN_ARRAY_FILENAME)
+def process_test_data():
+    testing_data = []
+    for img in progressbar.progressbar(os.listdir(TEST_DIRECTORY)):
+        path = os.path.join(TEST_DIRECTORY,img)
+        img_num = img.split('.')[0]
+        img = cv2.imread(path,cv2.IMREAD_GRAYSCALE)
+        img = cv2.resize(img, (IMG_SCALE,IMG_SCALE))
+        testing_data.append([np.array(img), img_num])
+        
+    shuffle(testing_data)
+    np.save('test_data.npy', testing_data)
+    return testing_data
+
+
+
+train_data = get_train_data(TRAIN_ARRAY_FILENAME)
+test_data = process_test_data()
+
+train = train_data[:-500]
+test = train_data[-500:]
+
+#input data
+X = np.array([i[0] for i in train]).reshape(-1, IMG_SCALE, IMG_SCALE, 1)
+#target data
+Y = [i[1] for i in test]
+
+test_x = np.array([i[0] for i in test]).reshape(-1,IMG_SIZE,IMG_SIZE,1)
+test_y = [i[1] for i in test]
+
+#model
+model = Sequential([
+    Conv2D(32, (3,3), activation='relu', input_shape=(IMG_SCALE, IMG_SCALE, 1)),
+    Flatten(),
+    Dense(2, activation='softmax')
+])
+
+model.compile(Adam(lr=LR), loss='categorical_crossentropy', metrics=['accuracy'])
+
+#TODO: nie wiem
+model.fit(X, Y, batch_size=10, epochs=5)
+
