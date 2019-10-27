@@ -23,6 +23,10 @@ import itertools
 #pip install opencv-python
 #pip install progressbar2
 
+from keras import layers
+from keras import models
+from keras import optimizers
+
 
 #TODO sieć konwolucyjna (convnet2d)
 #TODO funkcje aktywacji - relu (dla hidden layers)
@@ -36,7 +40,6 @@ IMG_SCALE = 50
 TRAIN_ARRAY_FILENAME = "cnn-dog-cat-sc{}.npy".format(IMG_SCALE)
 MODEL = 'cnn-img-dogs-cats.model'
 LR = 0.001
-
 
 def identify_train_img(img, first_type, second_type):
     if first_type in img:
