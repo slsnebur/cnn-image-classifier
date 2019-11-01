@@ -5,4 +5,5 @@ src/cic/cnn-dog-cat-sc25.npy
 src/cic/cnn-dog-cat-sc50.npy
 src/cic/cnn-dog-cat-sc75.npy
 src/cic/cnn-dog-cat-sc100.npy
+src/cic/cnn-img-dogs-cats.model
 
