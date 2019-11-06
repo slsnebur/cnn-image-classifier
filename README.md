@@ -1,5 +1,8 @@
 # cnn-image-classifier
- 
+
+
+
+```
 .
 ├── README.md
 ├── datasets
@@ -22,3 +25,4 @@
         ├── dog-cat-sc50-train.npy
         ├── predict.py
         └── train.py
+```
