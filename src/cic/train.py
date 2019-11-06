@@ -21,7 +21,7 @@ TEST_DIRECTORY = "../../datasets/test"
 IMG_SCALE = 50
 TRAIN_ARRAY_FILENAME = "dog-cat-sc{}-train.npy".format(IMG_SCALE)
 TEST_ARRAY_FILENAME = "dog-cat-sc{}-test.npy".format(IMG_SCALE)
-MODEL_NAME = 'cnn-img-dogs-cats.model'
+MODEL_NAME = "cnn-img-dogs-cats.model.{}".format(IMG_SCALE)
 LR = 0.001
 
 def identify_train_img(img, first_type, second_type):
@@ -84,7 +84,7 @@ model.add(MaxPooling2D(pool_size = (2,2)))
 model.add(Flatten())
 model.add(Dense(64, activation='relu'))
 # Add a softmax layer with 10 output units:
-model.add(Dense(1, activation='sigmoid'))
+model.add(Dense(1, activation='softmax'))
 
 model.compile(optimizer="adam", loss='binary_crossentropy', metrics=['accuracy'])
 
