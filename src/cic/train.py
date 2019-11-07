@@ -21,7 +21,7 @@ TEST_DIRECTORY = "../../datasets/test"
 IMG_SCALE = 50
 TRAIN_ARRAY_FILENAME = "dog-cat-sc{}-train.npy".format(IMG_SCALE)
 TEST_ARRAY_FILENAME = "dog-cat-sc{}-test.npy".format(IMG_SCALE)
-MODEL_NAME = "cnn-img-dogs-cats.model.{}".format(IMG_SCALE)
+MODEL_NAME = "test-cnn-img-dogs-cats.model.{}".format(IMG_SCALE)
 LR = 0.001
 
 def identify_train_img(img, first_type, second_type):
@@ -42,6 +42,10 @@ def get_train_data(array_filename):
         for img in progressbar.progressbar(os.listdir(TRAIN_DIRECTORY)):
             img_type = identify_train_img(img, "dog", "cat")
             path = os.path.join(TRAIN_DIRECTORY, img)
+
+            #augmentacja danych = z jednego obrazka stworzyc 4 innych roznych i zapisac na arrray
+            #https://www.kaggle.com/hanzh0420/image-augmentation-with-opencv
+
             img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
             img = cv2.resize(img, (IMG_SCALE, IMG_SCALE))
             training_array.append([np.array(img), img_type])
