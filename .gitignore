@@ -3,4 +3,4 @@ datasets/train
 datasets/test
 src/cic/*.model
 src/cic/*.npy
-
+.idea/

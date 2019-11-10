@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import os
+import sys
 from random import shuffle
 import progressbar
 
@@ -9,7 +10,7 @@ import keras
 #Images to predict and classify
 PREDICT_DIR = "../../predict"
 #Model
-MODEL_NAME = 'cnn-img-dogs-cats.50.model'
+MODEL_NAME = sys.argv[1]
 IMG_SCALE = int(MODEL_NAME.split('.')[1])
 
 from keras.models import load_model

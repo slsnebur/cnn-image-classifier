@@ -3,26 +3,18 @@ import cv2
 import os
 from random import shuffle
 import progressbar
+import matplotlib.pyplot as plt
 
-import keras
-from keras import backend as K
 from keras.models import Sequential
-from keras.layers import Activation
-from keras.layers.core import Dense, Flatten
-from keras.optimizers import Adam
-from keras.metrics import categorical_crossentropy
-from keras.preprocessing.image import ImageDataGenerator
-from keras.layers.normalization import BatchNormalization
-from keras.layers.convolutional import *
-from keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten
+from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten
 
 TRAIN_DIRECTORY = "../../datasets/train"
 TEST_DIRECTORY = "../../datasets/test"
 IMG_SCALE = 50
 TRAIN_ARRAY_FILENAME = "dog-cat-sc{}-train.npy".format(IMG_SCALE)
 TEST_ARRAY_FILENAME = "dog-cat-sc{}-test.npy".format(IMG_SCALE)
-MODEL_NAME = "test-cnn-img-dogs-cats.model.{}".format(IMG_SCALE)
-LR = 0.001
+MODEL_NUM = 3
+MODEL_NAME = "cnn-{}-img-dogs-cats.{}.model".format(MODEL_NUM, IMG_SCALE)
 
 def identify_train_img(img, first_type, second_type):
     if first_type in img:
@@ -74,31 +66,88 @@ y = np.array(y)
 #normalizing data
 X = X/255.0
 
-#Niezbadane sciezki zone
-model = Sequential()
+def get_model(model_num):
 
-#First layer - 64 nodes, kernel size (3,3) with relu activation function
-model.add(Conv2D(64,(3,3), activation = 'relu', input_shape = X.shape[1:]))
-model.add(MaxPooling2D(pool_size = (2,2)))
+    if model_num == 1:
+    # 1st model - pretty basic 1 convolutional layer
+        model = Sequential()
+        # Input layer - 64 filters, kernel size (3x3) with relu activation function
+        model.add(Conv2D(64, (3, 3), activation='relu', input_shape=X.shape[1:]))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
 
-#Second layer is essentialy the same
-model.add(Conv2D(64,(3,3), activation = 'relu'))
-model.add(MaxPooling2D(pool_size = (2,2)))
+        # Output layer
+        model.add(Flatten())
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(1, activation='sigmoid'))
 
-model.add(Flatten())
-model.add(Dense(64, activation='relu'))
-# Add a softmax layer with 10 output units:
-model.add(Dense(1, activation='softmax'))
+    # 2nd model - 2 Convolutional layers
+    elif model_num == 2:
+        model = Sequential()
+        # Input layer - 64 filters, kernel size (3x3) with relu activation function
+        model.add(Conv2D(64, (3, 3), activation='relu', input_shape=X.shape[1:]))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.compile(optimizer="adam", loss='binary_crossentropy', metrics=['accuracy'])
+        # Second layer same as first one
+        model.add(Conv2D(64, (3, 3), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
 
-BATCH_SIZE = 32
+        # Output layer
+        model.add(Flatten())
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(1, activation='sigmoid'))
+
+    # 3rd model - 2 Convolutional layers
+    elif model_num == 3:
+        model = Sequential()
+        # Input layer - 64 filters, kernel size (3x3) with relu activation function
+        model.add(Conv2D(64, (3, 3), activation='relu', input_shape=X.shape[1:]))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+
+        # Second layer
+        model.add(Conv2D(64, (3, 3), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+
+        # Third layer with more filters
+        model.add(Conv2D(128, (3, 3), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+
+        # Output layer
+        model.add(Flatten())
+        model.add(Dense(128, activation='relu'))
+        model.add(Dense(1, activation='sigmoid'))
+    else:
+        exit(-1)
+
+    return model
+
+model = get_model(MODEL_NUM)
+hist = model.compile(optimizer="rmsprop", loss='binary_crossentropy', metrics=['accuracy'])
+
+#Batch size and number of epochs
+BATCH_SIZE = 64
 EPOCHS = 10
 
-print(y.shape)
+hist = model.fit(X, y, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_split=0.2)
 
-model.fit(X, y, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_split=0.2)
-
-#Saving model
-model.save(MODEL_NAME)
+model.save("model" + str(MODEL_NUM) + "/" + MODEL_NAME)
 print("Model saved as " + MODEL_NAME)
+
+# generating plots of accuracy and loss by epochs
+# summarize history for accuracy
+plt.plot(hist.history['accuracy'])
+plt.plot(hist.history['val_accuracy'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig("model" + str(MODEL_NUM) + "/" + "accuracy.png")
+
+# summarize history for loss #TODO val_accuracy + val_loss
+plt.plot(hist.history['loss'])
+plt.plot(hist.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig("model" + str(MODEL_NUM) + "/" + "loss.png")
+

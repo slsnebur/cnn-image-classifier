@@ -21,8 +21,19 @@
 │   └── F.jpg
 └── src
     └── cic
-        ├── cnn-img-dogs-cats.50.model
         ├── dog-cat-sc50-train.npy
+        ├── model1
+        │   ├── accuracy.png
+        │   ├── loss.png
+        │   └── model1.model
+        ├── model2
+        │   ├── accuracy.png
+        │   ├── loss.png
+        │   └── model2.model
+        ├── model3
+        │   ├── accuracy.png
+        │   ├── loss.png
+        │   └── model3.model
         ├── predict.py
         └── train.py
 ```
