@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import os
+import random
 from random import shuffle
 import progressbar
 import matplotlib.pyplot as plt
@@ -13,7 +14,7 @@ TEST_DIRECTORY = "../../datasets/test"
 IMG_SCALE = 50
 TRAIN_ARRAY_FILENAME = "dog-cat-sc{}-train.npy".format(IMG_SCALE)
 TEST_ARRAY_FILENAME = "dog-cat-sc{}-test.npy".format(IMG_SCALE)
-MODEL_NUM = 3
+MODEL_NUM = 1
 MODEL_NAME = "cnn-{}-img-dogs-cats.{}.model".format(MODEL_NUM, IMG_SCALE)
 
 def identify_train_img(img, first_type, second_type):
@@ -22,29 +23,61 @@ def identify_train_img(img, first_type, second_type):
     else:
         return 0
 
+def get_flip_code(vflip, hflip):
+    if hflip or vflip:
+        flip_code = -1
+    else:
+        flip_code = 0 if vflip else 1
+    return flip_code
+
 def get_train_data(array_filename):
     training_array = []
+
     if os.path.exists("./" + array_filename):
         print("Training data already loaded, using: " + array_filename)
 
         training_array = np.load(array_filename, None, True)
     else:
-        print("Loading and preprocessing training data IMG_SCALE=" + str(IMG_SCALE) + "\n")
+        print("\nLoading and preprocessing training data IMG_SCALE=" + str(IMG_SCALE))
 
         for img in progressbar.progressbar(os.listdir(TRAIN_DIRECTORY)):
             img_type = identify_train_img(img, "dog", "cat")
             path = os.path.join(TRAIN_DIRECTORY, img)
 
-            #augmentacja danych = z jednego obrazka stworzyc 4 innych roznych i zapisac na arrray
-            #https://www.kaggle.com/hanzh0420/image-augmentation-with-opencv
-
             img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
             img = cv2.resize(img, (IMG_SCALE, IMG_SCALE))
             training_array.append([np.array(img), img_type])
-        
+
+            width = img.shape[1]
+            height = img.shape[0]
+            scale = 1.0
+
+            for i in range(3):
+                vertical_flip = random.choice([True, False])
+                horizontal_flip = random.choice([True, False])
+                #angle = random.random(0, 360) - float v2
+                #angle.randrange(0, 360) - int
+                angle = random.uniform(0, 360)
+
+                rotate_matrix = cv2.getRotationMatrix2D((IMG_SCALE/2, IMG_SCALE/2), angle, scale)
+                flip_code = get_flip_code(vertical_flip, horizontal_flip)
+
+                #flip
+                imga = cv2.flip(img, flip_code)
+                #rotate
+                imga = cv2.warpAffine(img, rotate_matrix, (IMG_SCALE, IMG_SCALE))
+
+                '''
+                print(imga.shape)
+                plt.imshow(imga, cmap="gray")
+                plt.show()
+                '''
+
+                training_array.append([np.array(imga), img_type])
+
         shuffle(training_array)
         np.save(array_filename, training_array)
-
+    print(len(training_array))
     return training_array
 
 #Creating X=[] - training array and Y=[] - target array
@@ -125,7 +158,7 @@ hist = model.compile(optimizer="rmsprop", loss='binary_crossentropy', metrics=['
 
 #Batch size and number of epochs
 BATCH_SIZE = 64
-EPOCHS = 10
+EPOCHS = 20
 
 hist = model.fit(X, y, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_split=0.2)
 
@@ -150,4 +183,3 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.savefig("model" + str(MODEL_NUM) + "/" + "loss.png")
-
