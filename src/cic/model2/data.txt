@@ -1,0 +1,5 @@
+acc=0.9331
+loss=0.1731
+time=752
+epochs=25
+batch_size=64

@@ -14,8 +14,11 @@ TEST_DIRECTORY = "../../datasets/test"
 IMG_SCALE = 50
 TRAIN_ARRAY_FILENAME = "dog-cat-sc{}-train.npy".format(IMG_SCALE)
 TEST_ARRAY_FILENAME = "dog-cat-sc{}-test.npy".format(IMG_SCALE)
-MODEL_NUM = 1
+MODEL_NUM = 3
 MODEL_NAME = "cnn-{}-img-dogs-cats.{}.model".format(MODEL_NUM, IMG_SCALE)
+#Batch size and number of epochs
+BATCH_SIZE = 64
+EPOCHS = 20
 
 def identify_train_img(img, first_type, second_type):
     if first_type in img:
@@ -106,10 +109,13 @@ def get_model(model_num):
         model = Sequential()
         # Input layer - 64 filters, kernel size (3x3) with relu activation function
         model.add(Conv2D(64, (3, 3), activation='relu', input_shape=X.shape[1:]))
+        # Pooling layer - zredukowanie ilosci cech i zlozonosci obliczeniowej sieci
         model.add(MaxPooling2D(pool_size=(2, 2)))
 
-        # Output layer
+        # Flattening layer always between convolutional layer and fully connected layer
+        # Transforms two dimensional matrix of features into vector and feeds it to FC layer
         model.add(Flatten())
+        # Fully connected layer
         model.add(Dense(64, activation='relu'))
         model.add(Dense(1, activation='sigmoid'))
 
@@ -132,8 +138,8 @@ def get_model(model_num):
     # 3rd model - 2 Convolutional layers
     elif model_num == 3:
         model = Sequential()
-        # Input layer - 64 filters, kernel size (3x3) with relu activation function
-        model.add(Conv2D(64, (3, 3), activation='relu', input_shape=X.shape[1:]))
+        # Input layer - 32 filters, kernel size (3x3) with relu activation function
+        model.add(Conv2D(32, (3, 3), activation='relu', input_shape=X.shape[1:]))
         model.add(MaxPooling2D(pool_size=(2, 2)))
 
         # Second layer
@@ -155,10 +161,6 @@ def get_model(model_num):
 
 model = get_model(MODEL_NUM)
 hist = model.compile(optimizer="rmsprop", loss='binary_crossentropy', metrics=['accuracy'])
-
-#Batch size and number of epochs
-BATCH_SIZE = 64
-EPOCHS = 20
 
 hist = model.fit(X, y, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_split=0.2)
 
