@@ -33,6 +33,25 @@ def get_flip_code(vflip, hflip):
         flip_code = 0 if vflip else 1
     return flip_code
 
+def count_test_data(array_data, part_perc_size):
+
+    n_iterations = part_perc_size * len(array_data)
+    array_data = array_data[:-int(n_iterations)]
+    zero_c = 0
+    one_c = 0
+    
+    i = 0
+    while i < n_iterations:
+        if array_data[i] == 0:
+            zero_c = zero_c + 1
+        else:
+            one_c = one_c +1
+        i = i+1
+
+    print("Number of 0's = " + str(zero_c))
+    print("Number of 1's = " + str(one_c))
+
+
 def get_train_data(array_filename):
     training_array = []
 
@@ -61,6 +80,7 @@ def get_train_data(array_filename):
                 #angle = random.random(0, 360) - float v2
                 #angle.randrange(0, 360) - int
                 angle = random.uniform(0, 360)
+                scale = random.uniform(0.5,1)
 
                 rotate_matrix = cv2.getRotationMatrix2D((IMG_SCALE/2, IMG_SCALE/2), angle, scale)
                 flip_code = get_flip_code(vertical_flip, horizontal_flip)
@@ -70,12 +90,11 @@ def get_train_data(array_filename):
                 #rotate
                 imga = cv2.warpAffine(img, rotate_matrix, (IMG_SCALE, IMG_SCALE))
 
-                '''
+                
                 print(imga.shape)
                 plt.imshow(imga, cmap="gray")
                 plt.show()
-                '''
-
+                
                 training_array.append([np.array(imga), img_type])
 
         shuffle(training_array)
@@ -85,7 +104,7 @@ def get_train_data(array_filename):
 
 #Creating X=[] - training array and Y=[] - target array
 X=[]
-y=[]
+y=[]   
 def process_train_data(training_data):
     print("Creating training and testing arrays...\n")
     for img in progressbar.progressbar(training_data):
@@ -98,6 +117,10 @@ process_train_data(train_data)
 #converting X,y into numpy arrays
 X = np.array(X).reshape(-1, IMG_SCALE, IMG_SCALE, 1)
 y = np.array(y)
+
+#Counting training set class representatives or something
+count_test_data(y, 0.2)
+
 
 #normalizing data
 X = X/255.0
