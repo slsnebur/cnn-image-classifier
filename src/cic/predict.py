@@ -2,9 +2,7 @@ import numpy as np
 import cv2
 import os
 import sys
-from random import shuffle
 import progressbar
-
 import keras
 
 #Images to predict and classify
@@ -16,7 +14,7 @@ IMG_SCALE = int(MODEL_NAME.split('.')[1])
 from keras.models import load_model
 model = load_model(MODEL_NAME)
 
-model.compile(optimizer="adam", loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer="rmsprop", loss='binary_crossentropy', metrics=['accuracy'])
 
 def process_images():
 

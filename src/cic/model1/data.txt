@@ -1,5 +1,37 @@
-acc=0.9363
-loss=0.1651
-time=572
-epochs=25
-batch_size=64
+epochs = 15
+batch_size = 64
+
+Epoch 1/15
+2019-11-14 23:19:59.455900: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cublas64_100.dll
+2019-11-14 23:20:00.137880: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudnn64_7.dll
+2019-11-14 23:20:02.517093: W tensorflow/stream_executor/cuda/redzone_allocator.cc:312] Internal: Invoking ptxas not supported on Windows
+Relying on driver to perform ptx compilation. This message will be only logged once.
+80000/80000 [==============================] - 52s 652us/step - loss: 0.6676 - accuracy: 0.6083 - val_loss: 0.6184 - val_accuracy: 0.6537
+Epoch 2/15
+80000/80000 [==============================] - 41s 518us/step - loss: 0.6071 - accuracy: 0.6646 - val_loss: 0.6055 - val_accuracy: 0.6665
+Epoch 3/15
+80000/80000 [==============================] - 41s 518us/step - loss: 0.5794 - accuracy: 0.6902 - val_loss: 0.6231 - val_accuracy: 0.6515
+Epoch 4/15
+80000/80000 [==============================] - 81s 1ms/step - loss: 0.5519 - accuracy: 0.7160 - val_loss: 0.6167 - val_accuracy: 0.6715
+Epoch 5/15
+80000/80000 [==============================] - 211s 3ms/step - loss: 0.5194 - accuracy: 0.7398 - val_loss: 0.6062 - val_accuracy: 0.6848
+Epoch 6/15
+80000/80000 [==============================] - 204s 3ms/step - loss: 0.4833 - accuracy: 0.7639 - val_loss: 0.6182 - val_accuracy: 0.6794
+Epoch 7/15
+80000/80000 [==============================] - 113s 1ms/step - loss: 0.4422 - accuracy: 0.7892 - val_loss: 0.6703 - val_accuracy: 0.6791
+Epoch 8/15
+80000/80000 [==============================] - 57s 708us/step - loss: 0.4002 - accuracy: 0.8159 - val_loss: 0.7085 - val_accuracy: 0.6706
+Epoch 9/15
+80000/80000 [==============================] - 60s 756us/step - loss: 0.3572 - accuracy: 0.8403 - val_loss: 0.7066 - val_accuracy: 0.6723
+Epoch 10/15
+80000/80000 [==============================] - 57s 716us/step - loss: 0.3148 - accuracy: 0.8638 - val_loss: 0.8149 - val_accuracy: 0.6681
+Epoch 11/15
+80000/80000 [==============================] - 56s 699us/step - loss: 0.2735 - accuracy: 0.8845 - val_loss: 0.8476 - val_accuracy: 0.6720
+Epoch 12/15
+80000/80000 [==============================] - 64s 799us/step - loss: 0.2335 - accuracy: 0.9054 - val_loss: 0.9961 - val_accuracy: 0.6724
+Epoch 13/15
+80000/80000 [==============================] - 60s 752us/step - loss: 0.2004 - accuracy: 0.9203 - val_loss: 1.0923 - val_accuracy: 0.6629
+Epoch 14/15
+80000/80000 [==============================] - 62s 778us/step - loss: 0.1681 - accuracy: 0.9346 - val_loss: 1.1173 - val_accuracy: 0.6668
+Epoch 15/15
+80000/80000 [==============================] - 59s 740us/step - loss: 0.1433 - accuracy: 0.9471 - val_loss: 1.2331 - val_accuracy: 0.6554

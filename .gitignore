@@ -2,5 +2,9 @@ datasets/
 datasets/train
 datasets/test
 src/cic/*.model
+src/cic/model1/*.model
+src/cic/model2/*.model
+src/cic/model3/*.model
 src/cic/*.npy
 .idea/
+.vscode/

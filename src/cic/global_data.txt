@@ -1,0 +1,10 @@
+0 - cats 1 - dogs
+Number of 0's in target array = 9925.0
+Number of 1's in target array = 10075.0
+Number of 0's in training array = 39955.0
+Number of 1's in training array = 40045.0
+
+
+class weights 
+{0: 1.0, 1: 0.9952114924181964}
+

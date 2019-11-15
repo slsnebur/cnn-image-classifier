@@ -1,6 +1,8 @@
 # cnn-image-classifier
 
 
+https://www.youtube.com/watch?v=py5byOOHZM8&t=13m56s
+
 
 ```
 .
