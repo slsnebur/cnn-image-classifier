@@ -4,6 +4,11 @@
 https://www.youtube.com/watch?v=py5byOOHZM8&t=13m56s
 
 
+
+#### Pretrained models and augmented dataset: [[MEGA]](https://mega.nz/#!1yoBiKDD!ngeXs6C_TmLEnlE2Xpq6zCa4U-wtdk2tVABXyo6WQVI)
+#### Pretrained models only: [[MEGA]](https://mega.nz/#!dvp1CIzR!rQDUMVagd2fOGPVPLZFnTuQ5mfHO8dJiNRKoU2GYuNI)
+
+
 ```
 .
 ├── README.md
